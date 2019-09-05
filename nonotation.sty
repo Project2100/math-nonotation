@@ -53,8 +53,10 @@
 
 % Comfort macros
 %
+% Common ratios
 \newcommand{\oneover}[1]{\frac{1}{#1}}
 \newcommand{\half}{\frac{1}{2}}
+% Negations
 \newcommand{\notimplies}{\centernot\implies}
 
 % Probability distributions
@@ -65,11 +67,14 @@
 \newcommand{\unifdist}{\mathcal{U}nif}
 % Binomial distribution
 \newcommand{\binomdist}{\mathcal{B}inom}
-% Bernoulli distribution, or coin
+% Bernoulli distribution
 \newcommand{\berdist}{\mathcal{B}er}
-\newcommand{\coin}{\berdist}
+% Bernoulli-Uniform, the fair coin
+\newcommand{\coin}{\berdist(\binary)}
 % Independency relation
 \newcommand{\indep}{\perp\!\!\!\!\perp}
+% Conditioned probability
+\newcommand{\knowing}{\mathrel{|}}
 
 % Probability operators
 %
@@ -89,9 +94,9 @@
 % Statistical indistinguishability
 \newcommand{\statindist}{\approx_\textsc{s}}
 % Polynomial function
-\newcommand{\poly}{\mathcal{P}\textit{oly}}
+\newcommand{\poly}{\mathcal{P}\!\textit{oly}}
 % Negligible function
-\newcommand{\negl}{\mathcal{N}\textit{egl}}
+\newcommand{\negl}{\mathcal{N}\!\textit{egl}}
 % Permutation, or ordering
 \newcommand{\permut}{\mathcal{P}\textit{erm}}
 \newcommand{\order}{\permut}
@@ -99,15 +104,30 @@
 % Cryptography
 %
 % Default challenger
-\newcommand{\challenger}{\textsf{C}}
+\newcommand{\challenger}{\textup{\textsf{C}}}
 % Default adversary
-\newcommand{\adversary}{\textsf{A}}
+\newcommand{\adversary}{\textup{\textsf{A}}}
 % Default distinguisher
-\newcommand{\distinguisher}{\textsf{D}}
+\newcommand{\distinguisher}{\textup{\textsf{D}}}
+
 % Cryptogame [math mode]
 \NewDocumentCommand{\cryptog}{m O{\Pi} O{\adversary}}{\textsc{Game}^{\textsc{#1}}_{#2, #3}}
 % Hybrid game [math mode]
 \NewDocumentCommand{\hybridg}{m O{\Pi} O{\adversary}}{\textsc{Hyb}^{\textsc{#1}}_{#2, #3}}
+
+% Hardcore predicate
+\newcommand{\hc}{\mathfrak{hc}}
+
+% Cryptographic primitives
+%
+% Encrypt
+\newcommand{\Enc}{\textup{\textsf{Enc}}}
+% Decrypt
+\newcommand{\Dec}{\textup{\textsf{Dec}}}
+% Tag
+\newcommand{\Tag}{\textup{\textsf{Tag}}}
+% Verify
+\newcommand{\Ver}{\textup{\textsf{Ver}}}
 
 % Acronyms
 %
@@ -172,6 +192,7 @@
 \setcounter{intransientfigure}{0}
 \newcounter{looplabel}
 
+% Helper macro for instantiating single figure floats on the fly
 \newcommand{\cseqcraftfloat}{
     \ifnum\@floatpenalty<0\relax
     \else
@@ -269,9 +290,7 @@
 % Arguments: Identifier (used as label) | description | challengername
 \NewDocumentEnvironment{cryptogame}{m m m O{2.2}}
 { % Crypto-game BEGIN
-
     \cseqcraftfloat
-
     \begin{tikzpicture}
 
         % Set unit measurements
@@ -313,14 +332,12 @@
 
 }
 { % Crypto-game END
-
         \ifnum\value{instancecount}>0
             \foreach \t [evaluate=\t] in {1,...,\theinstancecount}{
                 \draw[dotted] (inst\t) -- ++(0,-\thesequencecursor*\unitfactor-2.2*\unitfactor);
             }
         \fi
     \end{tikzpicture}
-
     \ifnum\value{intransientfigure}=1
         \caption{#2}
         \label{cryptogame:#1}
@@ -331,12 +348,10 @@
 
 
 
-% Arguments: Identifier (used as label) | description | challengername | Second adversary name
+% Arguments: Identifier (used as label) | description | challenger name | distinguisher name
 \NewDocumentEnvironment{cryptoredux}{m m m m O{2.2}}
 { % Crypto-game BEGIN
-
     \cseqcraftfloat
-
     \begin{tikzpicture}
 
         % Set unit measurements
@@ -379,14 +394,12 @@
 
 }
 { % Crypto-game END
-
         \ifnum\value{instancecount}>0
             \foreach \t [evaluate=\t] in {1,...,\theinstancecount}{
                 \draw[dotted] (inst\t) -- ++(0,-\thesequencecursor*\unitfactor-2.2*\unitfactor);
             }
         \fi
     \end{tikzpicture}
-    
     \ifnum\value{intransientfigure}=1
         \caption{#2}
         \label{cryptoredux:#1}
