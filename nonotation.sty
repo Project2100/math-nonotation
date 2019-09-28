@@ -65,12 +65,20 @@
 \newcommand{\probdist}{\mathcal{R}\textit{and}}
 % Uniform distribution
 \newcommand{\unifdist}{\mathcal{U}\kern -0.08em \textit{nif}}
-% Binomial distribution
-\newcommand{\binomdist}{\mathcal{B}\textit{inom}}
 % Bernoulli distribution
 \newcommand{\berdist}{\mathcal{B}\kern -0.08em \textit{er}}
 % Bernoulli-Uniform, the fair coin
 \newcommand{\coin}{\berdist(\binary)}
+
+% Binomial distribution
+\newcommand{\binomdist}{\mathcal{B}\textit{inom}}
+% Geometric distribution
+\newcommand{\geomdist}{\mathcal{G}\textit{eom}}
+% Exponential distribution
+\newcommand{\expdist}{\mathcal{E}\textit{xpon}}
+% Poisson distribution
+\newcommand{\poisdist}{\mathcal{P}\textit{ois}}
+
 % Independency relation
 \newcommand{\indep}{\perp\!\!\!\!\perp}
 % Conditioned probability
@@ -118,6 +126,11 @@
 % Hardcore predicate
 \newcommand{\hc}{\mathfrak{hc}}
 
+% Public key
+\newcommand{\pk}{\mathfrak{pk}}
+% Secret key
+\newcommand{\sk}{\mathfrak{sk}}
+
 % Cryptographic primitives
 %
 % Encrypt
@@ -164,15 +177,19 @@
 \newcommand{\cpa}{\textsc{cpa}}
 % Chosen Ciphertext Attack
 \newcommand{\cca}{\textsc{cca}}
-% Universally unForgeable from Chosen Message Attack
-\newcommand{\ufcma}{\textsc{ufcma}}
+% Universal Forgery under Chosen Message Attack
+\newcommand{\ufcma}{\textsc{uf-cma}}
+% Existential Forgery under Chosen Message Attack
+\newcommand{\efcma}{\textsc{ef-cma}}
+% strong Existential Forgery under Chosen Message Attack
+\newcommand{\sefcma}{s\textsc{ef-cma}}
 
 % Discrete Logarithm assumption
 \newcommand{\dl}{\textsc{dl}}
-% Decisional Diffie-Hellman assumption
-\newcommand{\ddh}{\textsc{ddh}}
 % Computational Diffie-Hellman assumption
 \newcommand{\cdh}{\textsc{cdh}}
+% Decisional Diffie-Hellman assumption
+\newcommand{\ddh}{\textsc{ddh}}
 
 % Goldreich-Goldwasser-Micali construct
 \newcommand{\ggm}{\textsc{ggm}}
@@ -403,6 +420,65 @@
     \ifnum\value{intransientfigure}=1
         \caption{#2}
         \label{cryptoredux:#1}
+        \end{figure}
+        \setcounter{intransientfigure}{0}
+    \fi
+}
+
+
+% Arguments: Identifier (used as label) | description | challengername
+\NewDocumentEnvironment{cryptosequence}{m m}
+{ % Crypto-game BEGIN
+    \cseqcraftfloat
+    \begin{tikzpicture}
+
+        % Set unit measurements
+        \setlength{\unitlength}{1cm}
+        \def\unitfactor{0.6}
+
+        % Set counters
+        \setcounter{preinstance}{0}
+        \setcounter{instancecount}{0}
+        \setcounter{sequencecursor}{0}
+        \node[coordinate] (inst0) {};
+        
+        %% Loop macros
+        %%   - Disabled here, as I can't control the entity names, for now
+        %\newcommand{\cseqbeginloop}{
+        %    \ifnum\thelooplabel=0
+        %    \setcounter{looplabel}{\thesequencecursor}
+        %    \stepcounter{looplabel}
+        %    \else \PackageError{notation}{Attempting to nest loops in a cryptosequence. Close the former loop first}
+        %    \fi
+        %}
+%
+        %\newcommand{\cseqendloop}{
+        %    \ifnum\thelooplabel=0
+        %        \PackageError{notation}{No loop to close here}
+        %    \fi
+        %    \ifnum\thelooplabel>\thesequencecursor\relax
+        %        \PackageError{notation}{Closing an empty loop}
+        %    \fi
+        %    \draw[->](A)+(-0.2, -0.15-\thesequencecursor*\unitfactor-0.7*\unitfactor)
+        %    .. controls +(-0.6, -1.3)
+        %    and         +(-0.6, +1.3)
+        %    ..          +(-0.2, 0.15-\thelooplabel*\unitfactor-0.7*\unitfactor);
+        %    \setcounter{looplabel}{0}
+        %}
+
+}
+{ % Crypto-game END
+
+            % Need a check for empty game - no participants
+        \ifnum\value{instancecount}>0
+            \foreach \t [evaluate=\t] in {1,...,\theinstancecount}{
+                \draw[dotted] (inst\t) -- ++(0,-\thesequencecursor*\unitfactor-2.2*\unitfactor);
+            }
+        \fi
+    \end{tikzpicture}
+    \ifnum\value{intransientfigure}=1
+        \caption{#2}
+        \label{cryptosequence:#1}
         \end{figure}
         \setcounter{intransientfigure}{0}
     \fi
